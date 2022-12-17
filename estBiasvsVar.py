@@ -1,4 +1,4 @@
-def main():
+def main(observations, train_size_p, edges_start, edges_end):
 
     from matplotlib import pyplot as plt
     from pandas import DataFrame
@@ -17,27 +17,26 @@ def main():
         x = list(x)
         samples = [x.pop(np.random.randint(0, len(x))) for i in range(train_size)]
         dfs = DataFrame(samples)
-        s = df.value_counts(normalize=True, dropna=True)
+        s = dfs.value_counts(normalize=True, dropna=True)
 
         return p, s
     
-    pop_size = [1000, 2]
-    train_size_p = 0.01
+    pop_size = [observations, 2]
     train_size = int(train_size_p * pop_size[0])
     Ebs = []
     Var = []
 
-    n = 2
+    n = edges_start
     xs = []
-    for i in range(15):
+    for i in range(edges_end):
         step = n + i
         pop_size[-1] = step
         p, s = get_data(pop_size, train_size)
-        Ebs.append(np.mean(s.values) - np.mean(p.values))
+        eb = np.mean(s.values) - np.mean(p.values)
+        print(eb)
+        Ebs.append(eb)
         Var.append(np.var(s.values))
         xs.append(step)
-
-    xs = [i + 1 for i in range(len(Ebs))]
     
     plt.plot(xs, Ebs, label='Estimate Bias')
     plt.plot(xs, Var, label='Variance')
@@ -46,4 +45,7 @@ def main():
     plt.legend()
     plt.show()
         
-main()
+main(observations=1000,
+     train_size_p= 0.3,
+     edges_start= 2,
+     edges_end= 15)
