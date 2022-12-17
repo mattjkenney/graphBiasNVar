@@ -28,14 +28,14 @@ def main():
     Var = []
 
     n = 2
-    xs = [n]
-    for i in range(10):
-        n += i
-        pop_size[-1] = n
+    xs = []
+    for i in range(15):
+        step = n + i
+        pop_size[-1] = step
         p, s = get_data(pop_size, train_size)
         Ebs.append(np.mean(s.values) - np.mean(p.values))
         Var.append(np.var(s.values))
-        xs.append(n)
+        xs.append(step)
 
     xs = [i + 1 for i in range(len(Ebs))]
     
